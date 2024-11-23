@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'authentication',
     'home',
     'game',
+    'serve',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',

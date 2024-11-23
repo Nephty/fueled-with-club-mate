@@ -84,31 +84,6 @@
 </head>
 <body>
 
-<nav class="navbar mx-4 my-4" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        {% if current_path != '/' %}
-            <div class="navbar-item">
-                <a style="color: inherit" href="/home" id="back-button">
-                    <i class="mdi mdi-chevron-left" aria-hidden="true"></i>
-                </a>
-            </div>
-        {% endif %}
-        </a>
-        <a role="button" class="navbar-burger" style="margin-top: 0.8rem" aria-label="menu" aria-expanded="false"
-           data-target="navbar">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-    <div class="navbar-menu" id="navbar">
-        <div class="navbar-start">
-        </div>
-        <div class="navbar-end">
-        </div>
-    </div>
-</nav>
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
@@ -124,8 +99,12 @@
     });
 </script>
 
+<div class="pt-5">
+
 {% block content %}
 {% endblock %}
+
+</div>
 
 </body>
 </html>
