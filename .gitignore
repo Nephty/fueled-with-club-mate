@@ -1,5 +1,5 @@
 .idea
 env
-**/__pycache__/
-fwcm/static/admin/
 out.html
+**/__pycache__/
+fwcm/static/admin

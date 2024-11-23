@@ -22,7 +22,8 @@ from django.conf import settings
 from . import views
 
 urlpatterns = [
-    path('', include('home.urls')),
+    path('admin/', admin.site.urls),
+    path('', include('authentication.urls')),
     path('', include('game.urls')),
     path('serve', include('serve.urls')),
 ] + staticfiles_urlpatterns()

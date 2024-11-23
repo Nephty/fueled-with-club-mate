@@ -40,7 +40,6 @@ def styled_html_view(request):
     style_tag.string = get_style_tag()
     append_tag_to_head(soup, style_tag)
 
-    # Return the modified HTML as a response
     response = HttpResponse(str(soup), content_type="text/html")
     response['X-Frame-Options'] = 'SAMEORIGIN'
     return response
