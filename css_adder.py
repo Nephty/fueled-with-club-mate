@@ -13,16 +13,14 @@ def add_style_to_html(page_url, output_file):
     soup = BeautifulSoup(html_content, 'html.parser')
 
     # Remove href attributes from all <a> tags
-    for img_tag in soup.find_all('img'):
-        for a_tag in soup.find_all('a', href=True):
-            a_tag['href'] = '#'
+    for a_tag in soup.find_all('a', href=True):
+        a_tag['href'] = '#'
 
     style_tag = soup.new_tag("style")
     style_tag.string = get_style_tag()
 
     append_tag_to_head(soup, style_tag)
 
-    # Écrit le HTML modifié dans un fichier de sortie
     with open(output_file, 'w', encoding='utf-8') as file:
         file.write(str(soup))
 
