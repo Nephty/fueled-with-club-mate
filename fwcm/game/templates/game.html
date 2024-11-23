@@ -2,6 +2,24 @@
 
 {% block head %}
 
+<style>
+
+.tool-rotate {
+  transform: rotate(180deg);
+  transform-origin: center;
+}
+
+.tool-zoom {
+  transform: scale(5); 
+  transform-origin: top left;
+}
+
+.tool-blur {
+  filter: blur(10px);
+}
+
+</style>
+
 {% endblock %}
 
 {% block content %}
@@ -26,7 +44,7 @@
       </aside>
     </div>
 
-    <div class="column" style="height: 100vh; display: flex;">
+    <div class="column tool-here" style="height: 100vh; display: flex;">
       <object id="website" type="text/html" data="{{html}}" style="width: 100%;" class="pr-4">
       </object>
     </div>
