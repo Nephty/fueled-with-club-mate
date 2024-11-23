@@ -35,12 +35,20 @@ def get_style_tag():
         font-family: 'BLOKKNeue' !important;
         src: url('/static/fonts/BLOKKNeue-Regular.ttf') format('truetype');
         filter: grayscale(100%);
+        pointer-events: none;
     }
     img {
         filter: blur(30px) grayscale(100%);
     }
     svg {
         filter: blur(5px) grayscale(100%);
+    }
+    span {
+        font-family: 'BLOKKNeue', sans-serif !important;
+        text: transparent;
+    }
+    input {
+        text: transparent;
     }
     """
 
