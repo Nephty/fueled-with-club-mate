@@ -105,26 +105,59 @@ objectElement.addEventListener('load', function() {
 
 <script>
 function processUrl(url) {
-  url = url.replace(/^https?:\/\//, '');
-  url = url.replace(/^www\./, '');
-  return url.split('/')[0].split('?')[0];
+    url = url.replace(/^https?:\/\//, '');
+    url = url.replace(/^www\./, '');
+    return url.split('.')[0];
 }
 
-const input = document.getElementById("input");
+function resetInputBackgroundColor() {
+    input.style.backgroundColor = "rgba(50, 50, 100, 0.7)";
+}
 
-function handleInput(event) {
-  if (event.key !== "Enter") return;
-  const inputValue = processUrl(input.value);
-  const placeholderValue = processUrl("reddit.com");
+function inputWrong() {
+    input.style.backgroundColor = "rgba(150, 50, 50, 0.7)";
+    input.classList.add('shake');
 
-  if (inputValue === placeholderValue) {
+    setTimeout(() => {
+        resetInputBackgroundColor();
+        input.classList.remove('shake');
+    }, 1200);
+    setTimeout(() => {
+        resetInputBackgroundColor();
+    }, 1200);
+}
+
+function validInput() {
     const inputRext = input.getBoundingClientRect();
     const x = inputRext.left + (inputRext.width / 2);
     const y = inputRext.top + (inputRext.height / 2);
     triggerConfetti(x, y);
-    input.style.backgroundColor = "rgba(50, 50, 100, 0.7)";
+
+    // Random confetti on a big dimanche
+    const randomNumber = Math.floor(Math.random() * 301) - 150;
+    const randomCoeff = Math.random();
+    const randomInvert = Math.random() < 0.2 ? 2.5 : 1;
+    setTimeout(() => {
+        triggerConfetti(350 + randomNumber * 0.75 * randomCoeff * randomInvert, 200 - randomNumber * randomCoeff * randomInvert);
+    }, 400)
+    setTimeout(() => {
+        triggerConfetti(1500 - randomNumber * 2 * randomCoeff * randomInvert, 400 + randomNumber * randomCoeff * randomInvert);
+    }, 700)
+    resetInputBackgroundColor();
+}
+
+const input = document.getElementById("input");
+const answer = "{{ answer }}"
+
+function handleInput(event) {
+  if (event.key !== "Enter") return;
+  const inputValue = processUrl(input.value);
+  const placeholderValue = processUrl(answer);
+
+  if (inputValue === placeholderValue) {
+      validInput();
   } else {
-    input.style.backgroundColor = "rgba(150, 50, 50, 0.7)";
+      inputWrong();
   }
 }
 
@@ -163,5 +196,30 @@ function triggerConfetti(x, y) {
     setTimeout(shoot, 0);
 }
 </script>
+
+<style>
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+    75% {
+        transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.input.shake {
+    animation: shake 0.3s ease-in-out;
+    animation-iteration-count: 1;
+}
+</style>
 
 {% endblock %}

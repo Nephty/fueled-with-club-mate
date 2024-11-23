@@ -23,7 +23,9 @@ pages = [
 
 def styled_html_view(request):
     # URL of the page to fetch and modify
-    page_url = random.choice(pages)
+    # page_url = random.choice(pages)
+    page = request.GET.get('page', random.choice(pages))
+    page_url = f"https://www.{page}.com/"
 
     html_content = get_html_from_url(page_url)
     if not html_content:
