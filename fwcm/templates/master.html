@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <meta charset="utf-8"/>
+    <title>Fueled with Club-Mate</title>
+    <link rel="icon" href="{% static 'fwcm.png' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
+    <style>
+        :root {
+            --danger: #d60044;
+        }
+
+        .is-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        #friendForm {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .field {
+            flex: 0 0 auto;
+        }
+
+        .has-border-success {
+            border-color: #48c774 !important;
+        }
+
+        .has-text-success {
+            color: #48c774 !important;
+        }
+
+        .has-border-failure {
+            border-color: #c42f2f !important;
+        }
+
+        .has-text-failure {
+            color: #c42f2f !important;
+        }
+
+        .horizontal-line {
+            height: 2px;
+            background-color: #ccc;
+            margin: 1rem 0;
+            width: 100%
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.0.1"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fuckGoBack = {
+                {# /home by default #}
+            }
+            const currentLocation = window.location.pathname;
+            let destination = fuckGoBack[currentLocation];
+            if (destination === undefined) {
+                destination = '/home';
+            }
+
+            for (let pattern in fuckGoBack) {
+                let regex = new RegExp('^' + pattern + '$')
+
+                if (regex.test(currentLocation)) {
+                    destination = fuckGoBack[pattern]
+                    break;
+                }
+            }
+            document.getElementById('back-button').href = destination;
+        })
+        ;
+    </script>
+
+    {% block head %}
+    {% endblock %}
+
+</head>
+<body>
+
+<nav class="navbar mx-4 my-4" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        {% if current_path != '/home/' %}
+            <div class="navbar-item">
+                <a style="color: inherit" href="/home" id="back-button">
+                    <i class="mdi mdi-chevron-left" aria-hidden="true"></i>
+                    <strong>Retour</strong>
+                </a>
+            </div>
+        {% endif %}
+        <a href="/" class="has-text-black title m-1 p-1" id="home-button"><strong>Fueled with Club-Mate</strong>
+        </a>
+        <a role="button" class="navbar-burger" style="margin-top: 0.8rem" aria-label="menu" aria-expanded="false"
+           data-target="navbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="navbar-menu" id="navbar">
+        <div class="navbar-start">
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                {% if user.is_authenticated %}
+                    <div class="pl-4 pr-4"></div>
+                    <a style="color: inherit" href="/profile"><strong>{{ user.username }}</strong></a>
+                    <p class="ml-2 mr-2"></p>
+                    <a href="/logout?next={{ request.path }}" class="button ml-2">Se déconnecter</a>
+                {% else %}
+                    <a href="/register?next={{ request.path }}" class="button is-info">Créer un compte</a>
+                    <a href="/login?next={{ request.path }}" class="button ml-2">Se connecter</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+        $navbarBurgers.forEach(el => {
+            el.addEventListener('click', () => {
+                const target = el.dataset.target;
+                const $target = document.getElementById(target);
+                el.classList.toggle('is-active');
+                $target.classList.toggle('is-active');
+            });
+        });
+    });
+</script>
+
+{% block content %}
+{% endblock %}
+
+<footer class="footer">
+    <div class="content">
+        <div class="columns">
+            <div class="column has-text-centered">
+                <p class="subtitle"><strong>Besoin d'aide ?</strong></p>
+                <a style="color: inherit" id="secret-button">Version actuelle : 0.0.0</a>
+            </div>
+            <div class="column has-text-centered">
+                <p class="subtitle"><strong>Des idées ?</strong></p>
+                <p><a style="color: inherit" href="/support">Support & feedback</a></p>
+                <p><a style="color: inherit" href="/faq">FAQ</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<audio id="audio">
+    <source src="{% static 'effect.mp3' %}">
+</audio>
+<script>
+    let clickCount = 0;
+    document.getElementById('secret-button').addEventListener('click', function () {
+        clickCount++;
+        if (clickCount === 5) {
+            const audio = document.getElementById('audio');
+            if (!audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+            audio.play();
+            clickCount = 0;
+        }
+    });
+</script>
+
+</body>
+</html>

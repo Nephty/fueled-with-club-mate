@@ -1,0 +1,70 @@
+{% extends 'master.html' %}
+
+{% block head %}
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            flex: 1;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="is-flex is-justify-content-center">
+        <form method="post" action="{% url 'register' %}?next={{ request.GET.next }}">
+            {% csrf_token %}
+            <div class="card has-background-info">
+                <div class="card-content">
+                    <div class="field">
+                        <label class="label has-text-white">Nom d'utilisateur</label>
+                        <div class="control">
+                            <input class="input" type="text" name="username" placeholder="username">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label has-text-white">Mot de passe</label>
+                        <div class="control">
+                            <input class="input" type="password" name="password1" placeholder="password">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label has-text-white">Confirmer le mot de passe</label>
+                        <div class="control">
+                            <input class="input" type="password" name="password2" placeholder="re-enter password">
+                        </div>
+                    </div>
+                    <div class="field">
+                        {% if form.errors %}
+                            <div class="">
+                                <strong>Erreur:</strong>
+                                <ul>
+                                    {% for field, errors in form.errors.items %}
+                                        {% for error in errors %}
+                                            <li>- {{ field }}: {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="field is-flex is-justify-content-center">
+                        <div class="control">
+                            <button class="button is-outlined is-white" type="submit">Créer un compte</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
