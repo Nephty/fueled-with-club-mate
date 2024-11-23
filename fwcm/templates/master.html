@@ -85,15 +85,13 @@
 
 <nav class="navbar mx-4 my-4" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        {% if current_path != '/home/' %}
+        {% if current_path != '/' %}
             <div class="navbar-item">
                 <a style="color: inherit" href="/home" id="back-button">
                     <i class="mdi mdi-chevron-left" aria-hidden="true"></i>
-                    <strong>Retour</strong>
                 </a>
             </div>
         {% endif %}
-        <a href="/" class="has-text-black title m-1 p-1" id="home-button"><strong>Fueled with Club-Mate</strong>
         </a>
         <a role="button" class="navbar-burger" style="margin-top: 0.8rem" aria-label="menu" aria-expanded="false"
            data-target="navbar">
@@ -106,20 +104,18 @@
         <div class="navbar-start">
         </div>
         <div class="navbar-end">
-            <div class="navbar-item">
-                {% if user.is_authenticated %}
-                    <div class="pl-4 pr-4"></div>
-                    <a style="color: inherit" href="/profile"><strong>{{ user.username }}</strong></a>
-                    <p class="ml-2 mr-2"></p>
-                    <a href="/logout?next={{ request.path }}" class="button ml-2">Se déconnecter</a>
-                {% else %}
-                    <a href="/register?next={{ request.path }}" class="button is-info">Créer un compte</a>
-                    <a href="/login?next={{ request.path }}" class="button ml-2">Se connecter</a>
-                {% endif %}
-            </div>
         </div>
     </div>
 </nav>
+
+<div class="content-wrapper">
+  <div class="container is-centered has-text-centered">
+    <a class="button is-info" href="/game">
+      <i class="mdi mdi-play"></i>
+    </a>
+  </div>
+</div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -138,22 +134,6 @@
 
 {% block content %}
 {% endblock %}
-
-<footer class="footer">
-    <div class="content">
-        <div class="columns">
-            <div class="column has-text-centered">
-                <p class="subtitle"><strong>Besoin d'aide ?</strong></p>
-                <a style="color: inherit" id="secret-button">Version actuelle : 0.0.0</a>
-            </div>
-            <div class="column has-text-centered">
-                <p class="subtitle"><strong>Des idées ?</strong></p>
-                <p><a style="color: inherit" href="/support">Support & feedback</a></p>
-                <p><a style="color: inherit" href="/faq">FAQ</a></p>
-            </div>
-        </div>
-    </div>
-</footer>
 
 <audio id="audio">
     <source src="{% static 'effect.mp3' %}">
