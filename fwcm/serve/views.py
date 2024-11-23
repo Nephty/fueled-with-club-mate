@@ -23,7 +23,6 @@ pages = [
 def styled_html_view(request):
     # URL of the page to fetch and modify
     page_url = random.choice(pages)
-    page_url = pages[-1]
 
     html_content = get_html_from_url(page_url)
     if not html_content:
