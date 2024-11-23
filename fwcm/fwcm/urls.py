@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
     path('', include('game.urls')),
+    path('', include('home.urls')),
     path('serve', include('serve.urls')),
 ] + staticfiles_urlpatterns()
 if settings.DEBUG:

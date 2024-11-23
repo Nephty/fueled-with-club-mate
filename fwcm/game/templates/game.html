@@ -2,6 +2,14 @@
 
 {% block head %}
 
+<script>
+#input {
+  font-weight: bold; 
+  box-shadow: 0 0 10px rgba(50, 50, 50, 0.7), 0 0 20px rgba(50, 50, 50, 0.0);
+  padding: 5rem;
+}
+</script>
+
 {% endblock %}
 
 {% block content %}
@@ -32,5 +40,39 @@
     </div>
 
   </div>
+
+<div class="modal" id="myModal">
+  <div class="modal-background" style="background: transparent;"></div>
+  <div class="modal-content">
+    <input id="input" class="input is-rounded is-info has-text-centered" type="text" style="border:none; outline:none; color:white; background: rgba(50, 50, 100, 0.7);"/>
+  </div>
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+<script>
+const modal = document.getElementById("myModal");
+document.addEventListener("keydown", function () {
+  if (!modal.classList.contains("is-active") && event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
+    modal.classList.add("is-active"); // Open the modal
+    const input = document.getElementById("input");
+    input.value = "";
+    input.focus();
+    
+  }
+  if (event.key === "Escape") {
+    modal.classList.remove("is-active"); // Close the modal
+  }
+});
+document.querySelectorAll(".modal-close, .modal-background").forEach((element) => {
+  element.addEventListener("click", function () {
+    const modal = document.getElementById("myModal");
+    modal.classList.remove("is-active"); // Close the modal
+  });
+});
+</script>
+
+<script>
+  const input = document.getElementById("input");
+</script>
 
 {% endblock %}
