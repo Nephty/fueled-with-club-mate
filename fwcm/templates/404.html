@@ -1,0 +1,32 @@
+{% extends 'master.html' %}
+
+{% block head %}
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            flex: 1;
+        }
+    </style>
+    {% load static %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <div class="container is-centered">
+            <div class="container is-vcentered">
+            <p class="title">Cette page n'existe pas </p>
+            <img src="{% static 'notfound.png' %} " alt="404" class="img-fluid"/>
+            </div>
+        </div>
+    </div>
+{% endblock %}
