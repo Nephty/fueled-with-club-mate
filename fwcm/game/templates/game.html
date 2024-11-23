@@ -30,21 +30,33 @@
       <aside class="menu has-text-centered">
         <ul>
           <li>
-            <button class="button is-danger">
+            <button id="flashlight-button" class="button is-outlined">
               <i class="mdi mdi-flashlight"></i>
             </button>
           </li>
           <br>
           <li>
-            <button class="button is-danger">
+            <button id="blur-button" class="button is-outlined">
               <i class="mdi mdi-blur"></i>
+            </button>
+          </li>
+          <br>
+          <li>
+            <button id="rotate-button" class="button is-outlined">
+              <i class="mdi mdi-flip-vertical"></i>
+            </button>
+          </li>
+          <br>
+          <li>
+            <button id="zoom-button" class="button is-outlined">
+              <i class="mdi mdi-magnify-plus"></i>
             </button>
           </li>
         </ul>
       </aside>
     </div>
 
-    <div class="column tool-here" style="height: 100vh; display: flex;">
+    <div id="website-div" class="column tool-here" style="height: 100vh; display: flex;">
       <object id="website" type="text/html" data="{{html}}" style="width: 100%;" class="pr-4">
       </object>
     </div>
@@ -60,6 +72,34 @@
 </div>
 
 <script>
+  const innerWebPage = document.getElementById("website-div");
+
+  document.getElementById("flashlight-button").addEventListener('click', function() { 
+    this.classList.toggle('is-outlined');
+    this.classList.toggle('is-danger');
+    innerWebPage.classList.toggle('');
+  });
+
+  document.getElementById("blur-button").addEventListener('click', function() { 
+    this.classList.toggle('is-outlined');
+    this.classList.toggle('is-danger');
+    innerWebPage.classList.toggle('tool-blur');
+  });
+
+  document.getElementById("rotate-button").addEventListener('click', function() { 
+    this.classList.toggle('is-outlined');
+    this.classList.toggle('is-danger');
+    innerWebPage.classList.toggle('tool-rotate');
+  });
+
+  document.getElementById("zoom-button").addEventListener('click', function() { 
+    this.classList.toggle('is-outlined');
+    this.classList.toggle('is-danger');
+    innerWebPage.classList.toggle('tool-zoom');
+  });
+</script>
+
+<script>
 const modal = document.getElementById("myModal");
 document.addEventListener("keydown", function () {
   if (!modal.classList.contains("is-active") && event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
@@ -67,7 +107,6 @@ document.addEventListener("keydown", function () {
     const input = document.getElementById("input");
     input.value = "";
     input.focus();
-    
   }
   if (event.key === "Escape") {
     modal.classList.remove("is-active");
@@ -84,22 +123,6 @@ document.querySelectorAll(".modal-close, .modal-background").forEach((element) =
     const modal = document.getElementById("myModal");
     modal.classList.remove("is-active"); // Close the modal
   });
-});
-</script>
-
-<script>
-const objectElement = document.getElementById('website');
-
-// Wait for the object to load its content
-objectElement.addEventListener('load', function() {
-    // Get the embedded document
-    const embeddedDocument = objectElement.contentDocument || objectElement.contentWindow.document;
-
-    // Access elements inside the embedded document
-    const metaTag = embeddedDocument.querySelector('meta#answer');
-    const answer = metaTag ? metaTag.getAttribute('answer') : null;
-
-    console.log("Answer:", answer); // Logs: something
 });
 </script>
 
