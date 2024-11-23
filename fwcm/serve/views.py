@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from .css_adder import add_style_to_html, get_html_from_url, get_style_tag, append_tag_to_head
 from bs4 import BeautifulSoup
 import random
+from django.shortcuts import render
 
 
 pages = [
@@ -39,6 +40,8 @@ def styled_html_view(request):
     style_tag = soup.new_tag("style")
     style_tag.string = get_style_tag()
     append_tag_to_head(soup, style_tag)
+    meta_tag = soup.new_tag("meta", id="answer", answer="something")
+    append_tag_to_head(soup, meta_tag)
 
     response = HttpResponse(str(soup), content_type="text/html")
     response['X-Frame-Options'] = 'SAMEORIGIN'
