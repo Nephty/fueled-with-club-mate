@@ -24,12 +24,39 @@ def add_style_to_html(page_url, output_file):
     with open(output_file, 'w', encoding='utf-8') as file:
         file.write(str(soup))
 
+def add_style_to_static_html(output_file):
+    """
+    Ajoute une balise <style> contenant des règles CSS dans le fichier HTML d'entrée.
+    Applique une police BLOKK à tout le texte et ajoute des filtres flou et noir et blanc aux images et SVG.
+    :param input_file: Chemin du fichier HTML d'entrée.
+    :param output_file: Chemin du fichier HTML de sortie.
+    """
+    input_file = "serve/templates/static_websites/youtube.html"
+    with open(input_file, 'r', encoding='utf-8') as file:
+        html_content = file.read()
+
+    soup = BeautifulSoup(html_content, 'html.parser')
+
+    # Remove href attributes from all <a> tags
+    for a_tag in soup.find_all('a', href=True):
+        a_tag['href'] = '#'
+
+    style_tag = soup.new_tag("style")
+    style_tag.string = get_style_tag()
+
+    append_tag_to_head(soup, style_tag)
+
+    with open(output_file, 'w', encoding='utf-8') as file:
+        file.write(str(soup))
+
+    print("Fi")
+
 
 def get_style_tag():
     return """
     @font-face {
         font-family: 'BLOKK';
-        src: url('font/BLOKKNeue-Regular.ttf') format('truetype');
+        src: url('fonts/BLOKKNeue-Regular.ttf') format('truetype');
     }
     * {
         font-family: 'BLOKK', sans-serif !important;
@@ -75,7 +102,4 @@ def get_html_from_url(url):
 
 # Exemple d'utilisation
 if __name__ == "__main__":
-    output_html_file = "out.html"
-    page_url = "https://www.youtube.com"
-
-    add_style_to_html(page_url, output_html_file)
+    add_style_to_static_html("serve/templates/static_websites/youtube_rendered.html")
