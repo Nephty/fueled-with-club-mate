@@ -1,0 +1,36 @@
+{% extends 'master.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="columns is-mobile" style="">
+
+    <div class="column is-1">
+      <aside class="menu has-text-centered">
+        <ul>
+          <li>
+            <button class="button is-danger">
+              <i class="mdi mdi-flashlight"></i>
+            </button>
+          </li>
+          <br>
+          <li>
+            <button class="button is-danger">
+              <i class="mdi mdi-blur"></i>
+            </button>
+          </li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="column" style="height: 100vh; display: flex;">
+      <object id="website" type="text/html" data="http://127.0.0.1:8000/serve" style="width: 100%;" class="pr-4">
+      </object>
+    </div>
+
+  </div>
+
+{% endblock %}

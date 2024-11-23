@@ -65,18 +65,6 @@ SESSION_COOKIE_SECURE = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Configuration du backend d'envoi des emails
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# Configuration du serveur SMTP
-EMAIL_HOST = 'mail.infomaniak.com'  # Serveur SMTP d'Infomaniak
-EMAIL_PORT = 465
-EMAIL_USE_TLS = False  # Utiliser TLS pour la sécurité
-EMAIL_USE_SSL = True  # Désactiver SSL si vous utilisez TLS
-EMAIL_HOST_USER = '' # Votre adresse email Infomaniak
-EMAIL_HOST_PASSWORD = ''  # Mot de passe de votre adresse email Infomaniak
-DEFAULT_FROM_EMAIL = ''  # Adresse email par défaut pour l'envoi des emails
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -88,11 +76,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'home',
-    'game',
-    'serve',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+
 ]
 
 MIDDLEWARE = [
@@ -133,10 +120,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'fwcm.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': os.environ.get('DB_NAME'),
+       'USER':  os.environ.get('DB_USER'),
+       'PASSWORD': os.environ.get('DB_PASSWORD'),
+       'HOST': os.environ.get('DB_HOST'),
+       'PORT': os.environ.get('DB_PORT'),
+   }
 }
 
 # Password validation
@@ -174,10 +165,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGIN_URL = '/login/'
 

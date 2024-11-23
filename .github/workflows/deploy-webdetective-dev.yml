@@ -1,0 +1,61 @@
+# test
+
+name: Django CI/CD on webdetective
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Set correct settings file
+        run: |
+          cp fwcm/fwcm/dev.settings.py fwcm/fwcm/settings.py
+
+      - name: Build and push Docker image
+        run: |
+          docker build \
+            --build-arg DB_NAME="${{ secrets.DB_NAME }}" \
+            --build-arg DB_USER="${{ secrets.DB_USER }}" \
+            --build-arg DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            --build-arg DB_HOST="${{ secrets.DB_HOST }}" \
+            --build-arg DB_PORT="${{ secrets.DB_PORT }}" \
+            --build-arg DJANGO_SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}" \
+            . -f dev.Dockerfile --tag ghcr.io/nepthy/webdetective:latest
+          docker push ghcr.io/nepthy/webdetective:latest
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY}}" >> ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          echo "Starting deployment..."
+          ssh -vvv -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ugo@anvil.ozalid.be "cd /home/ugo/ && docker-compose pull && docker-compose up -d && echo y | docker image prune -a && docker exec webdetective python fwcm/manage.py migrate && docker exec webdetective python fwcm/manage.py collectstatic --noinput"
