@@ -2,23 +2,23 @@
 
 {% block head %}
 
-<style>
+  <style>
 
-.tool-rotate {
-  transform: rotate(180deg);
-  transform-origin: center;
-}
+    .tool-rotate {
+      transform: rotate(180deg);
+      transform-origin: center;
+    }
 
-.tool-zoom {
-  transform: scale(5); 
-  transform-origin: top left;
-}
+    .tool-zoom {
+      transform: scale(5);
+      transform-origin: top left;
+    }
 
-.tool-blur {
-  filter: blur(10px);
-}
+    .tool-blur {
+      filter: blur(10px);
+    }
 
-</style>
+  </style>
 
 {% endblock %}
 
@@ -57,140 +57,197 @@
     </div>
 
     <div id="website-div" class="column tool-here" style="height: 100vh; display: flex;">
-      <object id="website" type="text/html" data="{{html}}" style="width: 100%;" class="pr-4">
+      <object id="website" type="text/html" data="{{ html }}" style="width: 100%;" class="pr-4">
       </object>
     </div>
 
   </div>
 
-<div class="modal" id="myModal">
-  <div class="modal-background" style="background: transparent;"></div>
-  <div class="modal-content">
-    <input id="input" class="input is-rounded is-info has-text-centered" type="text" style="border:none; outline:none; color:white; background: rgba(50, 50, 100, 0.7); letter-spacing: 0.1rem;"/>
+  <div class="modal" id="myModal">
+    <div class="modal-background" style="background: transparent;"></div>
+    <div class="modal-content">
+      <input id="input" class="input is-rounded is-info has-text-centered" type="text"
+           style="border:none; outline:none; color:white; background: rgba(50, 50, 100, 0.7); letter-spacing: 0.1rem;"/>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
   </div>
-  <button class="modal-close is-large" aria-label="close"></button>
-</div>
 
-<script>
-  const innerWebPage = document.getElementById("website-div");
+  <script>
+    const innerWebPage = document.getElementById("website-div");
+    const FLASHLIGHT_COOKIE_NAME = "flashlight";
+    const BLUR_COOKIE_NAME = "blur";
+    const ROTATE_COOKIE_NAME = "rotate";
+    const ZOOM_COOKIE_NAME = "zoom";
+    const TRUE_COOKIE_VALUE = "true";
+    const FALSE_COOKIE_VALUE = "false";
 
-  document.getElementById("flashlight-button").addEventListener('click', function() { 
-    this.classList.toggle('is-outlined');
-    this.classList.toggle('is-danger');
-    innerWebPage.classList.toggle('');
-  });
+    function setCookie(name, value, daysToExpire = 7) {
+      const date = new Date();
+      date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + date.toUTCString();
+      document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+    }
 
-  document.getElementById("blur-button").addEventListener('click', function() { 
-    this.classList.toggle('is-outlined');
-    this.classList.toggle('is-danger');
-    innerWebPage.classList.toggle('tool-blur');
-  });
+    function getCookie(name) {
+      const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return value ? value.pop() : '';
+    }
 
-  document.getElementById("rotate-button").addEventListener('click', function() { 
-    this.classList.toggle('is-outlined');
-    this.classList.toggle('is-danger');
-    innerWebPage.classList.toggle('tool-rotate');
-  });
+    let flashlightButton = document.getElementById("flashlight-button");
+    flashlightButton.addEventListener('click', function () {
+      this.classList.toggle('is-outlined');
+      this.classList.toggle('is-danger');
+      const isFlashlightActive = innerWebPage.classList.toggle('flashlight-active');
+      setCookie(FLASHLIGHT_COOKIE_NAME, isFlashlightActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
+    });
 
-  document.getElementById("zoom-button").addEventListener('click', function() { 
-    this.classList.toggle('is-outlined');
-    this.classList.toggle('is-danger');
-    innerWebPage.classList.toggle('tool-zoom');
-  });
-</script>
+    let blurButton = document.getElementById("blur-button");
+    blurButton.addEventListener('click', function () {
+      this.classList.toggle('is-outlined');
+      this.classList.toggle('is-danger');
+      const isBlurActive = innerWebPage.classList.toggle('tool-blur');
+      setCookie(BLUR_COOKIE_NAME, isBlurActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
+    });
 
-<script>
-const modal = document.getElementById("myModal");
-document.addEventListener("keydown", function () {
-  if (!modal.classList.contains("is-active") && event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
-    modal.classList.add("is-active");
-    const input = document.getElementById("input");
-    input.value = "";
-    input.focus();
-  }
-  if (event.key === "Escape") {
-    modal.classList.remove("is-active");
-  }
-  if (event.key === "Enter") {
-    const input = document.getElementById("input");
-    console.log(input.value);
-    // animation 
-    {#modal.classList.remove("is-active");#}
-  }
-});
-document.querySelectorAll(".modal-close, .modal-background").forEach((element) => {
-  element.addEventListener("click", function () {
+    let rotateButton = document.getElementById("rotate-button");
+    rotateButton.addEventListener('click', function () {
+      this.classList.toggle('is-outlined');
+      this.classList.toggle('is-danger');
+      const isRotateActive = innerWebPage.classList.toggle('tool-rotate');
+      setCookie(ROTATE_COOKIE_NAME, isRotateActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
+    });
+
+    let zoomButton = document.getElementById("zoom-button");
+    zoomButton.addEventListener('click', function () {
+      this.classList.toggle('is-outlined');
+      this.classList.toggle('is-danger');
+      const isZoomActive = innerWebPage.classList.toggle('tool-zoom');
+      setCookie(ZOOM_COOKIE_NAME, isZoomActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
+    });
+
+    function restoreState() {
+      console.log("restore")
+      if (getCookie(FLASHLIGHT_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
+        console.log("flashlight")
+        flashlightButton.classList.toggle('is-outlined');
+        flashlightButton.classList.toggle('is-danger');
+        innerWebPage.classList.add('flashlight-active');
+      }
+      if (getCookie(BLUR_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
+        console.log("blur")
+        blurButton.classList.toggle('is-outlined');
+        blurButton.classList.toggle('is-danger');
+        innerWebPage.classList.add('tool-blur');
+      }
+      if (getCookie(ROTATE_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
+        console.log("rotate")
+        rotateButton.classList.toggle('is-outlined');
+        rotateButton.classList.toggle('is-danger');
+        innerWebPage.classList.add('tool-rotate');
+      }
+      if (getCookie(ZOOM_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
+        console.log("zoom")
+        zoomButton.classList.toggle('is-outlined');
+        zoomButton.classList.toggle('is-danger');
+        innerWebPage.classList.add('tool-zoom');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', restoreState);
+  </script>
+
+  <script>
     const modal = document.getElementById("myModal");
-    modal.classList.remove("is-active"); // Close the modal
-  });
-});
-</script>
+    document.addEventListener("keydown", function () {
+      if (!modal.classList.contains("is-active") && event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
+        modal.classList.add("is-active");
+        const input = document.getElementById("input");
+        input.value = "";
+        input.focus();
+      }
+      if (event.key === "Escape") {
+        modal.classList.remove("is-active");
+      }
+      if (event.key === "Enter") {
+        const input = document.getElementById("input");
+        console.log(input.value);
+        // animation
+        {#modal.classList.remove("is-active");#}
+      }
+    });
+    document.querySelectorAll(".modal-close, .modal-background").forEach((element) => {
+      element.addEventListener("click", function () {
+        const modal = document.getElementById("myModal");
+        modal.classList.remove("is-active"); // Close the modal
+      });
+    });
+  </script>
 
-<script>
-function processUrl(url) {
-    url = url.replace(/^https?:\/\//, '');
-    url = url.replace(/^www\./, '');
-    return url.split('.')[0];
-}
+  <script>
+    function processUrl(url) {
+      url = url.replace(/^https?:\/\//, '');
+      url = url.replace(/^www\./, '');
+      return url.split('.')[0];
+    }
 
-function resetInputBackgroundColor() {
-    input.style.backgroundColor = "rgba(50, 50, 100, 0.7)";
-}
+    function resetInputBackgroundColor() {
+      input.style.backgroundColor = "rgba(50, 50, 100, 0.7)";
+    }
 
-function inputWrong() {
-    input.style.backgroundColor = "rgba(150, 50, 50, 0.7)";
-    input.classList.add('shake');
+    function inputWrong() {
+      input.style.backgroundColor = "rgba(150, 50, 50, 0.7)";
+      input.classList.add('shake');
 
-    setTimeout(() => {
+      setTimeout(() => {
         resetInputBackgroundColor();
         input.classList.remove('shake');
-    }, 1200);
-    setTimeout(() => {
+      }, 1200);
+      setTimeout(() => {
         resetInputBackgroundColor();
-    }, 1200);
-}
+      }, 1200);
+    }
 
-function validInput() {
-    const inputRext = input.getBoundingClientRect();
-    const x = inputRext.left + (inputRext.width / 2);
-    const y = inputRext.top + (inputRext.height / 2);
-    triggerConfetti(x, y);
+    function validInput() {
+      const inputRext = input.getBoundingClientRect();
+      const x = inputRext.left + (inputRext.width / 2);
+      const y = inputRext.top + (inputRext.height / 2);
+      triggerConfetti(x, y);
 
-    // Random confetti on a big dimanche
-    const randomNumber = Math.floor(Math.random() * 301) - 150;
-    const randomCoeff = Math.random();
-    const randomInvert = Math.random() < 0.2 ? 2.5 : 1;
-    setTimeout(() => {
+      // Random confetti on a big dimanche
+      const randomNumber = Math.floor(Math.random() * 301) - 150;
+      const randomCoeff = Math.random();
+      const randomInvert = Math.random() < 0.2 ? 2.5 : 1;
+      setTimeout(() => {
         triggerConfetti(350 + randomNumber * 0.75 * randomCoeff * randomInvert, 200 - randomNumber * randomCoeff * randomInvert);
-    }, 400)
-    setTimeout(() => {
+      }, 400)
+      setTimeout(() => {
         triggerConfetti(1500 - randomNumber * 2 * randomCoeff * randomInvert, 400 + randomNumber * randomCoeff * randomInvert);
-    }, 700)
-    resetInputBackgroundColor();
-}
+      }, 700)
+      resetInputBackgroundColor();
+    }
 
-const input = document.getElementById("input");
-const answer = "{{ answer }}"
+    const input = document.getElementById("input");
+    const answer = "{{ answer }}"
 
-function handleInput(event) {
-  if (event.key !== "Enter") return;
-  const inputValue = processUrl(input.value);
-  const placeholderValue = processUrl(answer);
+    function handleInput(event) {
+      if (event.key !== "Enter") return;
+      const inputValue = processUrl(input.value);
+      const placeholderValue = processUrl(answer);
 
-  if (inputValue === placeholderValue) {
-      validInput();
-  } else {
-      inputWrong();
-  }
-}
+      if (inputValue === placeholderValue) {
+        validInput();
+      } else {
+        inputWrong();
+      }
+    }
 
-input.addEventListener("keydown", handleInput);
+    input.addEventListener("keydown", handleInput);
 
-function triggerConfetti(x, y) {
-    const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    function triggerConfetti(x, y) {
+      const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+      const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
-    let defaults = {
+      let defaults = {
         spread: 200,
         ticks: 200,
         gravity: 0,
@@ -198,51 +255,51 @@ function triggerConfetti(x, y) {
         startVelocity: 15,
         origin: {x: x / screenWidth, y: y / screenHeight},
         colors: ['FFE400', 'FFBD00', 'E89400', 'FFCA6C', 'FDFFB8']
-    };
+      };
 
-    function shoot() {
+      function shoot() {
         confetti({
-            ...defaults,
-            particleCount: 60,
-            scalar: 1.2,
-            shapes: ['star']
+          ...defaults,
+          particleCount: 60,
+          scalar: 1.2,
+          shapes: ['star']
         });
 
         confetti({
-            ...defaults,
-            particleCount: 20,
-            scalar: 0.75,
-            shapes: ['circle']
+          ...defaults,
+          particleCount: 20,
+          scalar: 0.75,
+          shapes: ['circle']
         });
+      }
+
+      setTimeout(shoot, 0);
     }
+  </script>
 
-    setTimeout(shoot, 0);
-}
-</script>
-
-<style>
-@keyframes shake {
-    0% {
+  <style>
+    @keyframes shake {
+      0% {
         transform: translateX(0);
-    }
-    25% {
+      }
+      25% {
         transform: translateX(-10px);
-    }
-    50% {
+      }
+      50% {
         transform: translateX(10px);
-    }
-    75% {
+      }
+      75% {
         transform: translateX(-10px);
-    }
-    100% {
+      }
+      100% {
         transform: translateX(0);
+      }
     }
-}
 
-.input.shake {
-    animation: shake 0.3s ease-in-out;
-    animation-iteration-count: 1;
-}
-</style>
+    .input.shake {
+      animation: shake 0.3s ease-in-out;
+      animation-iteration-count: 1;
+    }
+  </style>
 
 {% endblock %}
