@@ -3,3 +3,4 @@ django-filter
 gunicorn
 djangorestframework
 requests
+beautifulsoup4
