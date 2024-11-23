@@ -91,4 +91,65 @@ objectElement.addEventListener('load', function() {
 });
 </script>
 
+<script>
+function processUrl(url) {
+  url = url.replace(/^https?:\/\//, '');
+  url = url.replace(/^www\./, '');
+  return url.split('/')[0].split('?')[0];
+}
+
+const input = document.getElementById("input");
+
+function handleInput(event) {
+  if (event.key !== "Enter") return;
+  const inputValue = processUrl(input.value);
+  const placeholderValue = processUrl("reddit.com");
+
+  if (inputValue === placeholderValue) {
+    const inputRext = input.getBoundingClientRect();
+    const x = inputRext.left + (inputRext.width / 2);
+    const y = inputRext.top + (inputRext.height / 2);
+    triggerConfetti(x, y);
+    input.style.backgroundColor = "rgba(50, 50, 100, 0.7)";
+  } else {
+    input.style.backgroundColor = "rgba(150, 50, 50, 0.7)";
+  }
+}
+
+input.addEventListener("keydown", handleInput);
+
+function triggerConfetti(x, y) {
+    const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+    let defaults = {
+        spread: 200,
+        ticks: 200,
+        gravity: 0,
+        decay: 0.95,
+        startVelocity: 15,
+        origin: {x: x / screenWidth, y: y / screenHeight},
+        colors: ['FFE400', 'FFBD00', 'E89400', 'FFCA6C', 'FDFFB8']
+    };
+
+    function shoot() {
+        confetti({
+            ...defaults,
+            particleCount: 60,
+            scalar: 1.2,
+            shapes: ['star']
+        });
+
+        confetti({
+            ...defaults,
+            particleCount: 20,
+            scalar: 0.75,
+            shapes: ['circle']
+        });
+    }
+
+    setTimeout(shoot, 0);
+}
+</script>
+
 {% endblock %}
