@@ -14,14 +14,15 @@ pages = [
     "https://en.wikipedia.org/",
     "https://www.amazon.com/",
     "https://www.reddit.com/",
-    "https://www.google.com/"
+    "https://www.google.com/",
+    "https://codenames.game/",
+    "https://github.com/"
 ]
 
 
 def styled_html_view(request):
     # URL of the page to fetch and modify
     page_url = random.choice(pages)
-    page_url = pages[-2]
 
     html_content = get_html_from_url(page_url)
     if not html_content:

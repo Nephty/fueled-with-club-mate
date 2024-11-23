@@ -34,6 +34,7 @@ def get_style_tag():
     * {
         font-family: 'BLOKKNeue' !important;
         src: url('/static/fonts/BLOKKNeue-Regular.ttf') format('truetype');
+        filter: grayscale(100%);
     }
     img {
         filter: blur(30px) grayscale(100%);
