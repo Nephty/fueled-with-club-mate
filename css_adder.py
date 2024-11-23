@@ -7,20 +7,28 @@ def add_style_to_html(input_file, output_file):
     :param input_file: Chemin du fichier HTML d'entrée.
     :param output_file: Chemin du fichier HTML de sortie.
     """
-    # Ouvre et lit le fichier HTML
     with open(input_file, 'r', encoding='utf-8') as file:
         html_content = file.read()
-    
-    # Parse le contenu HTML avec BeautifulSoup
+
     soup = BeautifulSoup(html_content, 'html.parser')
 
+    # Remove href attributes from all <a> tags
     for img_tag in soup.find_all('img'):
-        # Remove href attributes from all <a> tags
         for a_tag in soup.find_all('a', href=True):
-            a_tag['href'] = '#'  # Replace href with a non-navigational placeholder
+            a_tag['href'] = '#'
 
-    # Le CSS à ajouter
-    css_content = """
+    style_tag = soup.new_tag("style")
+    style_tag.string = get_style_tag()
+
+    append_tag_to_head(soup, style_tag)
+
+    # Écrit le HTML modifié dans un fichier de sortie
+    with open(output_file, 'w', encoding='utf-8') as file:
+        file.write(str(soup))
+
+
+def get_style_tag():
+    return """
     @font-face {
         font-family: 'BLOKK';
         src: url('font/BLOKKNeue-Regular.ttf') format('truetype');
@@ -36,30 +44,25 @@ def add_style_to_html(input_file, output_file):
     }
     """
 
-    # Crée une balise <style> et ajoute le CSS
-    style_tag = soup.new_tag("style")
-    style_tag.string = css_content
 
-    # Vérifie si la balise <head> existe, sinon la crée
+def append_tag_to_head(soup, tag):
+    """
+    Verifies if the <head> tag exists. If it doesn't, it creates the head tag.
+    It then appends the given tag to the head tag.
+    """
     if soup.head:
-        soup.head.append(style_tag)
+        soup.head.append(tag)
     else:
-        # Si il n'y a pas de balise <head>, on la crée
         head_tag = soup.new_tag("head")
-        head_tag.append(style_tag)
+        head_tag.append(tag)
         soup.insert(0, head_tag)
-
-    # Écrit le HTML modifié dans un fichier de sortie
-    with open(output_file, 'w', encoding='utf-8') as file:
-        file.write(str(soup))
 
 
 # Exemple d'utilisation
 if __name__ == "__main__":
-    input_html_file = "linkedin.html"  # Remplacez par le chemin de votre fichier HTML
-    output_html_file = "linkedin_css.html"  # Remplacez par le chemin de votre fichier HTML de sortie
+    input_html_file = "linkedin.html"
+    output_html_file = "linkedin_css.html"
 
-    # Appel de la fonction pour ajouter le style au fichier HTML
     add_style_to_html(input_html_file, output_html_file)
 
     print(f"Le fichier modifié a été sauvegardé sous : {output_html_file}")
