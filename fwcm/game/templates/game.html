@@ -18,6 +18,21 @@
       filter: blur(10px);
     }
 
+    .tool-wave {
+      width: 400px;
+      height: 400px;
+      animation: wave 1s infinite;
+    }
+
+    @keyframes wave {
+      0%, 100% {
+        transform: scale(1) skew(-20deg, -10deg);
+      }
+      50% {
+        transform: scale(1) skew(20deg, 10deg);
+      }
+    }
+
   </style>
 
 {% endblock %}
@@ -52,6 +67,12 @@
               <i class="mdi mdi-magnify-plus"></i>
             </button>
           </li>
+          <br>
+          <li>
+            <button id="wave-button" class="button is-outlined">
+              <i class="mdi mdi-waves"></i>
+            </button>
+          </li>
         </ul>
       </aside>
     </div>
@@ -78,6 +99,7 @@
     const BLUR_COOKIE_NAME = "blur";
     const ROTATE_COOKIE_NAME = "rotate";
     const ZOOM_COOKIE_NAME = "zoom";
+    const WAVE_COOKIE_NAME = "wave";
     const TRUE_COOKIE_VALUE = "true";
     const FALSE_COOKIE_VALUE = "false";
 
@@ -125,31 +147,39 @@
       setCookie(ZOOM_COOKIE_NAME, isZoomActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
     });
 
+    let waveButton = document.getElementById("wave-button");
+    waveButton.addEventListener('click', function () {
+      this.classList.toggle('is-outlined');
+      this.classList.toggle('is-danger');
+      const isWaveActive = innerWebPage.classList.toggle('tool-wave');
+      setCookie(WAVE_COOKIE_NAME, isWaveActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
+    });
+
     function restoreState() {
-      console.log("restore")
       if (getCookie(FLASHLIGHT_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
-        console.log("flashlight")
         flashlightButton.classList.toggle('is-outlined');
         flashlightButton.classList.toggle('is-danger');
         innerWebPage.classList.add('flashlight-active');
       }
       if (getCookie(BLUR_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
-        console.log("blur")
         blurButton.classList.toggle('is-outlined');
         blurButton.classList.toggle('is-danger');
         innerWebPage.classList.add('tool-blur');
       }
       if (getCookie(ROTATE_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
-        console.log("rotate")
         rotateButton.classList.toggle('is-outlined');
         rotateButton.classList.toggle('is-danger');
         innerWebPage.classList.add('tool-rotate');
       }
       if (getCookie(ZOOM_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
-        console.log("zoom")
         zoomButton.classList.toggle('is-outlined');
         zoomButton.classList.toggle('is-danger');
         innerWebPage.classList.add('tool-zoom');
+      }
+      if (getCookie(WAVE_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
+        zoomButton.classList.toggle('is-outlined');
+        zoomButton.classList.toggle('is-danger');
+        innerWebPage.classList.add('tool-wave');
       }
     }
 
