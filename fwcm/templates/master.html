@@ -12,70 +12,9 @@
         :root {
             --danger: #d60044;
         }
-
-        .is-danger {
-            background-color: var(--danger);
-            color: white;
-        }
-
-        #friendForm {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .field {
-            flex: 0 0 auto;
-        }
-
-        .has-border-success {
-            border-color: #48c774 !important;
-        }
-
-        .has-text-success {
-            color: #48c774 !important;
-        }
-
-        .has-border-failure {
-            border-color: #c42f2f !important;
-        }
-
-        .has-text-failure {
-            color: #c42f2f !important;
-        }
-
-        .horizontal-line {
-            height: 2px;
-            background-color: #ccc;
-            margin: 1rem 0;
-            width: 100%
-        }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.0.1"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fuckGoBack = {
-                {# /home by default #}
-            }
-            const currentLocation = window.location.pathname;
-            let destination = fuckGoBack[currentLocation];
-            if (destination === undefined) {
-                destination = '/home';
-            }
-
-            for (let pattern in fuckGoBack) {
-                let regex = new RegExp('^' + pattern + '$')
-
-                if (regex.test(currentLocation)) {
-                    destination = fuckGoBack[pattern]
-                    break;
-                }
-            }
-            document.getElementById('back-button').href = destination;
-        })
-        ;
-    </script>
 
     {% block head %}
     {% endblock %}
