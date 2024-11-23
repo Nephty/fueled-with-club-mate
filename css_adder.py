@@ -1,14 +1,14 @@
 from bs4 import BeautifulSoup
+import requests
 
-def add_style_to_html(input_file, output_file):
+def add_style_to_html(page_url, output_file):
     """
     Ajoute une balise <style> contenant des règles CSS dans le fichier HTML d'entrée.
     Applique une police BLOKK à tout le texte et ajoute des filtres flou et noir et blanc aux images et SVG.
     :param input_file: Chemin du fichier HTML d'entrée.
     :param output_file: Chemin du fichier HTML de sortie.
     """
-    with open(input_file, 'r', encoding='utf-8') as file:
-        html_content = file.read()
+    html_content = get_html_from_url(page_url)
 
     soup = BeautifulSoup(html_content, 'html.parser')
 
@@ -58,11 +58,26 @@ def append_tag_to_head(soup, tag):
         soup.insert(0, head_tag)
 
 
+def get_html_from_url(url):
+    """
+    Fetches the HTML content of a webpage using requests.Session.
+    :param url: URL of the webpage to fetch.
+    :return: HTML content of the page or an error if the request fails.
+    """
+    try:
+        with requests.Session() as session:
+            response = session.get(url)
+            response.raise_for_status()
+            return response.text
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error while fetching {url}: {e}")
+        return None
+
+
 # Exemple d'utilisation
 if __name__ == "__main__":
-    input_html_file = "linkedin.html"
-    output_html_file = "linkedin_css.html"
+    output_html_file = "out.html"
+    page_url = "https://www.youtube.com"
 
-    add_style_to_html(input_html_file, output_html_file)
-
-    print(f"Le fichier modifié a été sauvegardé sous : {output_html_file}")
+    add_style_to_html(page_url, output_html_file)
