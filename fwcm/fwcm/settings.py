@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'home',
+    'game',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',

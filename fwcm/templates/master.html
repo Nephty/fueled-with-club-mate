@@ -49,6 +49,7 @@
             margin: 1rem 0;
             width: 100%
         }
+
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.0.1"></script>
@@ -108,15 +109,6 @@
     </div>
 </nav>
 
-<div class="content-wrapper">
-  <div class="container is-centered has-text-centered">
-    <a class="button is-info" href="/game">
-      <i class="mdi mdi-play"></i>
-    </a>
-  </div>
-</div>
-
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
@@ -134,25 +126,6 @@
 
 {% block content %}
 {% endblock %}
-
-<audio id="audio">
-    <source src="{% static 'effect.mp3' %}">
-</audio>
-<script>
-    let clickCount = 0;
-    document.getElementById('secret-button').addEventListener('click', function () {
-        clickCount++;
-        if (clickCount === 5) {
-            const audio = document.getElementById('audio');
-            if (!audio.paused) {
-                audio.pause();
-                audio.currentTime = 0;
-            }
-            audio.play();
-            clickCount = 0;
-        }
-    });
-</script>
 
 </body>
 </html>
