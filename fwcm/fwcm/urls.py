@@ -24,6 +24,7 @@ from . import views
 urlpatterns = [
     path('', include('home.urls')),
     path('', include('game.urls')),
+    path('/serve', include('serve.urls')),
 ] + staticfiles_urlpatterns()
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
