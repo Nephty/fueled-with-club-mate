@@ -5,8 +5,6 @@
 <script>
 #input {
   font-weight: bold; 
-  box-shadow: 0 0 10px rgba(50, 50, 50, 0.7), 0 0 20px rgba(50, 50, 50, 0.0);
-  padding: 5rem;
 }
 </script>
 
@@ -35,7 +33,7 @@
     </div>
 
     <div class="column" style="height: 100vh; display: flex;">
-      <object id="website" type="text/html" data="http://127.0.0.1:8000/serve" style="width: 100%;" class="pr-4">
+      <object id="website" type="text/html" data="{{html}}" style="width: 100%;" class="pr-4">
       </object>
     </div>
 
@@ -44,7 +42,7 @@
 <div class="modal" id="myModal">
   <div class="modal-background" style="background: transparent;"></div>
   <div class="modal-content">
-    <input id="input" class="input is-rounded is-info has-text-centered" type="text" style="border:none; outline:none; color:white; background: rgba(50, 50, 100, 0.7);"/>
+    <input id="input" class="input is-rounded is-info has-text-centered" type="text" style="border:none; outline:none; color:white; background: rgba(50, 50, 100, 0.7); letter-spacing: 0.1rem;"/>
   </div>
   <button class="modal-close is-large" aria-label="close"></button>
 </div>
@@ -53,14 +51,20 @@
 const modal = document.getElementById("myModal");
 document.addEventListener("keydown", function () {
   if (!modal.classList.contains("is-active") && event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
-    modal.classList.add("is-active"); // Open the modal
+    modal.classList.add("is-active");
     const input = document.getElementById("input");
     input.value = "";
     input.focus();
     
   }
   if (event.key === "Escape") {
-    modal.classList.remove("is-active"); // Close the modal
+    modal.classList.remove("is-active");
+  }
+  if (event.key === "Enter") {
+    const input = document.getElementById("input");
+    console.log(input.value);
+    // animation 
+    modal.classList.remove("is-active");
   }
 });
 document.querySelectorAll(".modal-close, .modal-background").forEach((element) => {
@@ -72,7 +76,19 @@ document.querySelectorAll(".modal-close, .modal-background").forEach((element) =
 </script>
 
 <script>
-  const input = document.getElementById("input");
+const objectElement = document.getElementById('website');
+
+// Wait for the object to load its content
+objectElement.addEventListener('load', function() {
+    // Get the embedded document
+    const embeddedDocument = objectElement.contentDocument || objectElement.contentWindow.document;
+
+    // Access elements inside the embedded document
+    const metaTag = embeddedDocument.querySelector('meta#answer');
+    const answer = metaTag ? metaTag.getAttribute('answer') : null;
+
+    console.log("Answer:", answer); // Logs: something
+});
 </script>
 
 {% endblock %}
