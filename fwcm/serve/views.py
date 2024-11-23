@@ -44,5 +44,4 @@ def styled_html_view(request):
     # Return the modified HTML as a response
     response = HttpResponse(str(soup), content_type="text/html")
     response['X-Frame-Options'] = 'SAMEORIGIN'
-    print(response)
     return response
