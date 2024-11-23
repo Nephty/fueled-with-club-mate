@@ -2,12 +2,6 @@
 
 {% block head %}
 
-<script>
-#input {
-  font-weight: bold; 
-}
-</script>
-
 {% endblock %}
 
 {% block content %}
@@ -64,7 +58,7 @@ document.addEventListener("keydown", function () {
     const input = document.getElementById("input");
     console.log(input.value);
     // animation 
-    modal.classList.remove("is-active");
+    {#modal.classList.remove("is-active");#}
   }
 });
 document.querySelectorAll(".modal-close, .modal-background").forEach((element) => {
