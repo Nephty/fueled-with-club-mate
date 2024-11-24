@@ -50,6 +50,28 @@
         pointer-events: none;
     }
 
+.box {
+  display: flex;
+  cursor: none;
+  width: 100%;
+
+  overflow: hidden;
+  position: relative;
+  
+  --flashlight-y-pos: -200px;
+  --flashlight-x-pos: -200px;
+  --flashlight-inset: -300px;
+}
+
+.box::before {
+  content: '';
+  position: absolute;
+  inset: var(--flashlight-inset);
+  background-image: radial-gradient(circle, transparent 0%, rgba(0,0,0,0.4) 65px, black 70px, black 100%);
+  background-position: var(--flashlight-x-pos) var(--flashlight-y-pos);
+  background-repeat: repeat;
+}
+
   </style>
 
 {% endblock %}
@@ -100,7 +122,7 @@
       </aside>
     </div>
 
-    <div id="website-div" class="column tool-here" style="height: 100vh; display: flex;">
+    <div id="website-div" class="column box tool-here" style="height: 100vh; display: flex;">
       <object id="website" type="text/html" data="{{ html }}" style="width: 100%;" class="pr-4">
       </object>
     </div>
@@ -115,6 +137,32 @@
     </div>
     <button class="modal-close is-large" aria-label="close"></button>
   </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    const webdiv = document.getElementById("website-div");
+    webdiv.classList.remove('box');
+});
+</script>
+    <script>
+const box = document.querySelector(".box");
+const rect = box.getBoundingClientRect();
+
+box.addEventListener("mousemove", (e) => {
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  box.style.setProperty("--flashlight-x-pos", `${x - rect.width / 2}px`);
+  box.style.setProperty("--flashlight-y-pos", `${y - rect.height / 2}px`);
+});
+
+box.addEventListener("mouseleave", () => {
+  const inset = box.style.getPropertyValue("--flashlight-inset");
+
+  box.style.setProperty("--flashlight-x-pos", inset);
+  box.style.setProperty("--flashlight-y-pos", inset);
+});
+    </script>
 
   <script>
     const innerWebPage = document.getElementById("website-div");
@@ -143,7 +191,7 @@
     flashlightButton.addEventListener('click', function () {
       this.classList.toggle('is-outlined');
       this.classList.toggle('is-danger');
-      const isFlashlightActive = innerWebPage.classList.toggle('flashlight-active');
+      const isFlashlightActive = innerWebPage.classList.toggle('box');
       setCookie(FLASHLIGHT_COOKIE_NAME, isFlashlightActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
     });
 
@@ -191,7 +239,7 @@
       if (getCookie(FLASHLIGHT_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
         flashlightButton.classList.toggle('is-outlined');
         flashlightButton.classList.toggle('is-danger');
-        innerWebPage.classList.add('flashlight-active');
+        innerWebPage.classList.add('box');
       }
       if (getCookie(BLUR_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
         blurButton.classList.toggle('is-outlined');
