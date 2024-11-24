@@ -10,14 +10,18 @@
 4. Game 3
    1. Wikipédia
    2. upside-down
-5. Game 4
-    1. YouTube
-    2. Zoomé
-6. Game 5
+
+6. Game 4
    1. Odoo
    2. Flashlight
+  
+5. Game 5
+    1. YouTube
+    2. Flashlight + fiesta
 7. Récap fin de game
 8. Montrer autres fonctionalitées
+
+Mettre Odoo en game 4 et youtube : flashlight + 
 
 ## Lore/contexte
 
@@ -26,3 +30,11 @@ Internet est corrompu, les sites ont perdu leur nom et tout leur contenu est tot
 ## Ébauche de script
 
 L'heure est grave, Internet est corrompu, les sites ont perdu leur nom et tout leur contenu est totalement transformé ! Heureusement, vous, cher (public ? jury ?) êtes de grands internautes qui connaissez Internet comme votre poche. Alors enfilez votre veste de détective, et aidez-nous à inspecter ces sites !
+
+Pour chaque jeu, on commente un peu. 
+- "Donc, quel est ce site ?"
+- "Ça devient plus compliqué ! Le site est carrément renversé"
+- 
+
+On joue à leur place ou ils jouent ?
+ 
