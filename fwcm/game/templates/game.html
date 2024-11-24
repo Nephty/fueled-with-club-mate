@@ -447,13 +447,21 @@ box.addEventListener("mouseleave", () => {
           setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
           setCookie(SCORE_COOKIE_NAME, 0);
           const progressBar = document.getElementById('progress-bar');
-          progressBar.value = 0;
+          progressBar.value = 5;
+          setTimeout(() => {
+              location.reload();
+          }, 5000);
       } else {
         setCookie(GAMES_REMAINING_COOKIE_NAME, newRemainingGames);
         const newScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
         setCookie(SCORE_COOKIE_NAME, newScore);
         const progressBar = document.getElementById('progress-bar');
         progressBar.value = 5 - newRemainingGames;
+        setTimeout(() => {
+            location.reload();
+            input.disabled = false;
+        }, 1500);
+        input.disabled = true;
       }
     }
 
