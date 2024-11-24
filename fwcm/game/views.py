@@ -29,3 +29,7 @@ def scripted_game_view(request):
     html = f'https://harbiinger.xyz/static_websites/{page}_rendered.html'
 
     return render(request, 'game.html', {'html':html, 'answer':page})
+
+def end_game_view(request):
+    score = request.COOKIES.get("score")
+    return render(request, 'end.html', {'score':score})
