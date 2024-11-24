@@ -191,6 +191,8 @@ box.addEventListener("mouseleave", () => {
     const WAVE_COOKIE_NAME = "wave";
     const RED_COOKIE_NAME = "red";
     const STAINS_COOKIE_NAME = "stains";
+    const GAMES_REMAINING_COOKIE_NAME = "remaining";
+    const SCORE_COOKIE_NAME = "score";
     const TRUE_COOKIE_VALUE = "true";
     const FALSE_COOKIE_VALUE = "false";
 
@@ -298,9 +300,19 @@ box.addEventListener("mouseleave", () => {
         stainsButton.classList.toggle('is-danger');
         innerWebPage.classList.add('tool-stains');
       }
+      const progressBar = document.getElementById('progress-bar');
+      progressBar.value = 5 - parseInt(getCookie(GAMES_REMAINING_COOKIE_NAME));
     }
 
     document.addEventListener('DOMContentLoaded', restoreState);
+
+
+      document.addEventListener("DOMContentLoaded", function() {
+          if (getCookie(GAMES_REMAINING_COOKIE_NAME) === "") {
+              setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
+              document.getElementById("progress-bar").setAttribute("value", 5)
+          }
+    });
 
     const MIN_RADIUS = 250;
     const MAX_RADIUS = 500;
@@ -333,6 +345,8 @@ box.addEventListener("mouseleave", () => {
         stain.style.position = "absolute";
         stain.style.left = `${randomX - randomRadius}px`;
         stain.style.top = `${randomY - randomRadius}px`;
+
+        stain.style.display = 'none';
 
         targetDiv.appendChild(stain);
       }
@@ -425,6 +439,22 @@ box.addEventListener("mouseleave", () => {
         triggerConfetti(1500 - randomNumber * 2 * randomCoeff * randomInvert, 400 + randomNumber * randomCoeff * randomInvert);
       }, 700)
       resetInputBackgroundColor();
+
+      const newRemainingGames = parseInt(getCookie(GAMES_REMAINING_COOKIE_NAME)) - 1;
+      if (newRemainingGames === 0) {
+          const finalScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
+          console.log("Game over " + finalScore);
+          setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
+          setCookie(SCORE_COOKIE_NAME, 0);
+          const progressBar = document.getElementById('progress-bar');
+          progressBar.value = 0;
+      } else {
+        setCookie(GAMES_REMAINING_COOKIE_NAME, newRemainingGames);
+        const newScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
+        setCookie(SCORE_COOKIE_NAME, newScore);
+        const progressBar = document.getElementById('progress-bar');
+        progressBar.value = 5 - newRemainingGames;
+      }
     }
 
     const input = document.getElementById("input");
