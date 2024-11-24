@@ -10,7 +10,7 @@ working_pages = [
     "odoo", "linkedin", "youtube", "wikipedia", "reddit", "yahoo", "pinterest", "discord", "twitch", "spotify"
 ]
 
-scripted_pages = ["youtube", "odoo", "wikipedia", "linkedin", "chatgpt"]
+scripted_pages = ["youtube", "odoo", "wikipedia", "chatgpt", "linkedin"]
 
 def dynamic_game_view(request):
     page = random.choice(working_pages)
