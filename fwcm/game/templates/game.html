@@ -34,43 +34,43 @@
     }
 
     .tool-red {
-        width: 400px;
-        height: 400px;
-        position: relative;
+      width: 400px;
+      height: 400px;
+      position: relative;
     }
 
     .tool-red::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 0, 0, 0.5);
-        pointer-events: none;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 0, 0, 0.5);
+      pointer-events: none;
     }
 
-.box {
-  display: flex;
-  cursor: none;
-  width: 100%;
+    .box {
+      display: flex;
+      cursor: none;
+      width: 100%;
 
-  overflow: hidden;
-  position: relative;
+      overflow: hidden;
+      position: relative;
 
-  --flashlight-y-pos: -200px;
-  --flashlight-x-pos: -200px;
-  --flashlight-inset: -300px;
-}
+      --flashlight-y-pos: -200px;
+      --flashlight-x-pos: -200px;
+      --flashlight-inset: -300px;
+    }
 
-.box::before {
-  content: '';
-  position: absolute;
-  inset: var(--flashlight-inset);
-  background-image: radial-gradient(circle, transparent 0%, rgba(0,0,0,0.4) 65px, black 70px, black 100%);
-  background-position: var(--flashlight-x-pos) var(--flashlight-y-pos);
-  background-repeat: repeat;
-}
+    .box::before {
+      content: '';
+      position: absolute;
+      inset: var(--flashlight-inset);
+      background-image: radial-gradient(circle, transparent 0%, rgba(0, 0, 0, 0.4) 65px, black 70px, black 100%);
+      background-position: var(--flashlight-x-pos) var(--flashlight-y-pos);
+      background-repeat: repeat;
+    }
 
     .stain {
       position: absolute;
@@ -85,14 +85,22 @@
 
 {% block content %}
 
-    <audio hidden id="audioPlayer" src="https://harbiinger.xyz/correct.mp3" controls>
-    </audio>
-    <audio hidden id="errorPlayer" src="https://harbiinger.xyz/error.mp3" controls>
-    </audio>
+  <audio hidden id="audioPlayer" src="https://harbiinger.xyz/correct.mp3" controls>
+  </audio>
+  <audio hidden id="errorPlayer" src="https://harbiinger.xyz/error.mp3" controls>
+  </audio>
 
 
   <div class="columns is-centered has-text-centered my-3">
-    <progress id="progress-bar" class="progress is-primary is-small is-centered" value="2" max="5" style="width: 30%;"></progress>
+    <div class="column is-1">
+    </div>
+    <div class="column">
+      <div class="is-flex is-justify-content-center">
+
+        <progress id="progress-bar" class="progress is-primary is-large is-centered" value="0" max="5"
+              style="width: 90%;"></progress>
+      </div>
+    </div>
   </div>
 
   <div class="columns is-mobile" style="">
@@ -161,31 +169,31 @@
     <button class="modal-close is-large" aria-label="close"></button>
   </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function(){
-    const webdiv = document.getElementById("website-div");
-    webdiv.classList.remove('box');
-});
-</script>
-    <script>
-const box = document.querySelector(".box");
-const rect = box.getBoundingClientRect();
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const webdiv = document.getElementById("website-div");
+      webdiv.classList.remove('box');
+    });
+  </script>
+  <script>
+    const box = document.querySelector(".box");
+    const rect = box.getBoundingClientRect();
 
-box.addEventListener("mousemove", (e) => {
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+    box.addEventListener("mousemove", (e) => {
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-  box.style.setProperty("--flashlight-x-pos", `${x - rect.width / 2}px`);
-  box.style.setProperty("--flashlight-y-pos", `${y - rect.height / 2}px`);
-});
+      box.style.setProperty("--flashlight-x-pos", `${x - rect.width / 2}px`);
+      box.style.setProperty("--flashlight-y-pos", `${y - rect.height / 2}px`);
+    });
 
-box.addEventListener("mouseleave", () => {
-  const inset = box.style.getPropertyValue("--flashlight-inset");
+    box.addEventListener("mouseleave", () => {
+      const inset = box.style.getPropertyValue("--flashlight-inset");
 
-  box.style.setProperty("--flashlight-x-pos", inset);
-  box.style.setProperty("--flashlight-y-pos", inset);
-});
-    </script>
+      box.style.setProperty("--flashlight-x-pos", inset);
+      box.style.setProperty("--flashlight-y-pos", inset);
+    });
+  </script>
 
   <script>
     let scripted = "{{ scripted }}" === "True";
@@ -257,10 +265,10 @@ box.addEventListener("mouseleave", () => {
 
     let redButton = document.getElementById("red-button");
     redButton.addEventListener('click', function () {
-        this.classList.toggle('is-outlined');
-        this.classList.toggle('is-danger');
-        const isRedActive = innerWebPage.classList.toggle('tool-red');
-        setCookie(RED_COOKIE_NAME, isRedActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
+      this.classList.toggle('is-outlined');
+      this.classList.toggle('is-danger');
+      const isRedActive = innerWebPage.classList.toggle('tool-red');
+      setCookie(RED_COOKIE_NAME, isRedActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
     });
 
     let stainsButton = document.getElementById("stains-button");
@@ -298,9 +306,9 @@ box.addEventListener("mouseleave", () => {
         innerWebPage.classList.add('tool-wave');
       }
       if (getCookie(RED_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
-          redButton.classList.toggle('is-outlined');
-          redButton.classList.toggle('is-danger');
-          innerWebPage.classList.add('tool-red');
+        redButton.classList.toggle('is-outlined');
+        redButton.classList.toggle('is-danger');
+        innerWebPage.classList.add('tool-red');
       }
       if (getCookie(STAINS_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
         stainsButton.classList.toggle('is-outlined');
@@ -314,11 +322,11 @@ box.addEventListener("mouseleave", () => {
     document.addEventListener('DOMContentLoaded', restoreState);
 
 
-      document.addEventListener("DOMContentLoaded", function() {
-          if (getCookie(GAMES_REMAINING_COOKIE_NAME) === "") {
-              setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
-              document.getElementById("progress-bar").setAttribute("value", 0)
-          }
+    document.addEventListener("DOMContentLoaded", function () {
+      if (getCookie(GAMES_REMAINING_COOKIE_NAME) === "") {
+        setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
+        document.getElementById("progress-bar").setAttribute("value", 0)
+      }
     });
 
     const MIN_RADIUS = 250;
@@ -379,7 +387,7 @@ box.addEventListener("mouseleave", () => {
 
     addRandomStains(50);
 
-        function processUrl(url) {
+    function processUrl(url) {
       url = url.replace(/^https?:\/\//, '');
       url = url.replace(/^www\./, '');
       return url.split('.')[0];
@@ -430,53 +438,79 @@ box.addEventListener("mouseleave", () => {
 
       const newRemainingGames = parseInt(getCookie(GAMES_REMAINING_COOKIE_NAME)) - 1;
       if (newRemainingGames === 0) {
-          const finalScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
-          console.log("Game over " + finalScore);
-          setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
-          setCookie(SCORE_COOKIE_NAME, 0);
-          const progressBar = document.getElementById('progress-bar');
-          progressBar.value = 5;
-          setTimeout(() => {
-              location.reload();
-          }, 5000);
+        const finalScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
+        console.log("Game over " + finalScore);
+        setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
+        setCookie(SCORE_COOKIE_NAME, 0);
+        const progressBar = document.getElementById('progress-bar');
+        progressBar.value = 5;
+        setTimeout(() => {
+          location.reload();
+        }, 5000);
       } else {
         setCookie(GAMES_REMAINING_COOKIE_NAME, newRemainingGames);
         const newScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
         setCookie(SCORE_COOKIE_NAME, newScore);
         const progressBar = document.getElementById('progress-bar');
         const newProgressBarValue = 5 - newRemainingGames;
-        progressBar.value = newProgressBarValue;
+
+        function animateProgressBar(progressBar, targetValue, duration = 1000) {
+          const startValue = parseFloat(progressBar.value);
+          const change = targetValue - startValue;
+          const startTime = performance.now();
+
+          // Ease-in function (quadratic easing)
+          function easeIn(t) {
+            return t * t;
+          }
+
+          function updateProgress(currentTime) {
+            const elapsedTime = currentTime - startTime;
+            let progress = Math.min(elapsedTime / duration, 1); // Cap the progress at 1
+            progress = easeIn(progress); // Apply easing function
+            progressBar.value = startValue + progress * change;
+
+            if (progress < 1) {
+              requestAnimationFrame(updateProgress);
+            }
+          }
+
+          requestAnimationFrame(updateProgress);
+        }
+
+        animateProgressBar(progressBar, newProgressBarValue);
+
         setTimeout(() => {
-            location.reload();
-            input.disabled = false;
+          location.reload();
+          input.disabled = false;
         }, 1500);
         input.disabled = true;
 
         if (scripted) {
-            switch (newProgressBarValue) {
-                case 1:
-                    break;
-                case 2:
-                    setTimeout(() => {
-                        zoomButton.click();
-                    }, 1500);
-                    break;
-                case 3:
-                    zoomButton.click();
-                    setTimeout(() => {
-                        rotateButton.click();
-                    }, 1500);
-                    break;
-                case 4:
-                    rotateButton.click();
-                    setTimeout(() => {
-                        flashlightButton.click();
-                    }, 1500);
-                    break;
-                case 5:
-                    flashlightButton.click();
-                    break;
-            }
+          switch (newProgressBarValue) {
+            case 1:
+              break;
+            case 2:
+              setTimeout(() => {
+                zoomButton.click();
+              }, 1500);
+              break;
+            case 3:
+              zoomButton.click();
+              setTimeout(() => {
+                rotateButton.click();
+              }, 1500);
+              break;
+            case 4:
+              rotateButton.click();
+              setTimeout(() => {
+                flashlightButton.click();
+              }, 1500);
+              break;
+            case 5:
+              flashlightButton.click();
+              break;
+          }
         }
       }
     }
