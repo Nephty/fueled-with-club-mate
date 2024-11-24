@@ -72,6 +72,13 @@
   background-repeat: repeat;
 }
 
+    .stain {
+      position: absolute;
+      background: radial-gradient(circle, black 0%, rgba(255, 0, 0, 0) 45%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
   </style>
 
 {% endblock %}
@@ -116,6 +123,12 @@
           <li>
             <button id="red-button" class="button is-outlined">
               <i class="mdi mdi-redhat"></i>
+            </button>
+          </li>
+          <br>
+          <li>
+            <button id="stains-button" class="button is-outlined">
+              <i class="mdi mdi-spray"></i>
             </button>
           </li>
         </ul>
@@ -172,6 +185,7 @@ box.addEventListener("mouseleave", () => {
     const ZOOM_COOKIE_NAME = "zoom";
     const WAVE_COOKIE_NAME = "wave";
     const RED_COOKIE_NAME = "red";
+    const STAINS_COOKIE_NAME = "stains";
     const TRUE_COOKIE_VALUE = "true";
     const FALSE_COOKIE_VALUE = "false";
 
@@ -229,10 +243,18 @@ box.addEventListener("mouseleave", () => {
 
     let redButton = document.getElementById("red-button");
     redButton.addEventListener('click', function () {
+        this.classList.toggle('is-outlined');
+        this.classList.toggle('is-danger');
+        const isRedActive = innerWebPage.classList.toggle('tool-red');
+        setCookie(RED_COOKIE_NAME, isRedActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
+    });
+
+    let stainsButton = document.getElementById("stains-button");
+    stainsButton.addEventListener('click', function () {
       this.classList.toggle('is-outlined');
       this.classList.toggle('is-danger');
-      const isRedActive = innerWebPage.classList.toggle('tool-red');
-      setCookie(RED_COOKIE_NAME, isRedActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
+      const isWaveActive = innerWebPage.classList.toggle('tool-stains');
+      setCookie(STAINS_COOKIE_NAME, isWaveActive ? TRUE_COOKIE_VALUE : FALSE_COOKIE_VALUE);
     });
 
     function restoreState() {
@@ -262,13 +284,74 @@ box.addEventListener("mouseleave", () => {
         innerWebPage.classList.add('tool-wave');
       }
       if (getCookie(RED_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
-        redButton.classList.toggle('is-outlined');
-        redButton.classList.toggle('is-danger');
-        innerWebPage.classList.add('tool-red');
+          redButton.classList.toggle('is-outlined');
+          redButton.classList.toggle('is-danger');
+          innerWebPage.classList.add('tool-red');
+      }
+      if (getCookie(STAINS_COOKIE_NAME) === TRUE_COOKIE_VALUE) {
+        stainsButton.classList.toggle('is-outlined');
+        stainsButton.classList.toggle('is-danger');
+        innerWebPage.classList.add('tool-stains');
       }
     }
 
     document.addEventListener('DOMContentLoaded', restoreState);
+
+    const MIN_RADIUS = 250;
+    const MAX_RADIUS = 500;
+
+    function addRandomStains(numStains) {
+      const targetDiv = document.getElementById("website-div");
+
+      if (!targetDiv) {
+        console.error("Target div with id 'website-div' not found.");
+        return;
+      }
+
+      const targetRect = targetDiv.getBoundingClientRect();
+
+      for (let i = 0; i < numStains; i++) {
+        const stain = document.createElement('div');
+
+        const randomRadius = Math.floor(Math.random() * (MAX_RADIUS - MIN_RADIUS + 1)) + MIN_RADIUS;
+
+        // Random positions relative to targetDiv
+        const randomX = Math.floor(Math.random() * targetRect.width) + randomRadius;
+        const randomY = Math.floor(Math.random() * targetRect.height);
+
+        stain.classList.add('stain');
+
+        stain.style.width = `${randomRadius * 2}px`;
+        stain.style.height = `${randomRadius * 2}px`;
+
+        // Positioning stains relative to the targetDiv
+        stain.style.position = "absolute";
+        stain.style.left = `${randomX - randomRadius}px`;
+        stain.style.top = `${randomY - randomRadius}px`;
+
+        targetDiv.appendChild(stain);
+      }
+    }
+
+    function toggleStains() {
+      const stains = document.querySelectorAll('.stain');
+      const toggleButton = document.querySelector('.toggle-button');
+
+      if (stains.length > 0) {
+        const isHidden = stains[0].style.display === 'block';
+
+        stains.forEach(stain => {
+          stain.style.display = isHidden ? 'none' : 'block';
+        });
+
+        toggleButton.textContent = isHidden ? 'Hide Stains' : 'Show Stains';
+        toggleButton.classList.toggle('hidden', !isHidden);
+      }
+    }
+
+    document.getElementById('stains-button').addEventListener('click', toggleStains);
+
+    addRandomStains(50);
   </script>
 
   <script>
@@ -286,8 +369,6 @@ box.addEventListener("mouseleave", () => {
       if (event.key === "Enter") {
         const input = document.getElementById("input");
         console.log(input.value);
-        // animation
-        {#modal.classList.remove("is-active");#}
       }
     });
     document.querySelectorAll(".modal-close, .modal-background").forEach((element) => {
