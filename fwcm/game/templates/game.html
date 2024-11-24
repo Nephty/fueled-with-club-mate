@@ -57,7 +57,7 @@
 
   overflow: hidden;
   position: relative;
-  
+
   --flashlight-y-pos: -200px;
   --flashlight-x-pos: -200px;
   --flashlight-inset: -300px;
@@ -90,7 +90,7 @@
     <audio hidden id="errorPlayer" src="https://harbiinger.xyz/error.mp3" controls>
     </audio>
 
-  
+
   <div class="columns is-centered has-text-centered my-3">
     <progress id="progress-bar" class="progress is-primary is-small is-centered" value="2" max="5" style="width: 30%;"></progress>
   </div>
@@ -188,6 +188,8 @@ box.addEventListener("mouseleave", () => {
     </script>
 
   <script>
+    let scripted = "{{ scripted }}" === "True";
+
     const innerWebPage = document.getElementById("website-div");
     const FLASHLIGHT_COOKIE_NAME = "flashlight";
     const BLUR_COOKIE_NAME = "blur";
@@ -315,7 +317,7 @@ box.addEventListener("mouseleave", () => {
       document.addEventListener("DOMContentLoaded", function() {
           if (getCookie(GAMES_REMAINING_COOKIE_NAME) === "") {
               setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
-              document.getElementById("progress-bar").setAttribute("value", 5)
+              document.getElementById("progress-bar").setAttribute("value", 0)
           }
     });
 
@@ -376,35 +378,8 @@ box.addEventListener("mouseleave", () => {
     document.getElementById('stains-button').addEventListener('click', toggleStains);
 
     addRandomStains(50);
-  </script>
 
-  <script>
-    const modal = document.getElementById("myModal");
-    document.addEventListener("keydown", function () {
-      if (!modal.classList.contains("is-active") && event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
-        modal.classList.add("is-active");
-        const input = document.getElementById("input");
-        input.value = "";
-        input.focus();
-      }
-      if (event.key === "Escape") {
-        modal.classList.remove("is-active");
-      }
-      if (event.key === "Enter") {
-        const input = document.getElementById("input");
-        console.log(input.value);
-      }
-    });
-    document.querySelectorAll(".modal-close, .modal-background").forEach((element) => {
-      element.addEventListener("click", function () {
-        const modal = document.getElementById("myModal");
-        modal.classList.remove("is-active"); // Close the modal
-      });
-    });
-  </script>
-
-  <script>
-    function processUrl(url) {
+        function processUrl(url) {
       url = url.replace(/^https?:\/\//, '');
       url = url.replace(/^www\./, '');
       return url.split('.')[0];
@@ -469,12 +444,40 @@ box.addEventListener("mouseleave", () => {
         const newScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
         setCookie(SCORE_COOKIE_NAME, newScore);
         const progressBar = document.getElementById('progress-bar');
-        progressBar.value = 5 - newRemainingGames;
+        const newProgressBarValue = 5 - newRemainingGames;
+        progressBar.value = newProgressBarValue;
         setTimeout(() => {
             location.reload();
             input.disabled = false;
         }, 1500);
         input.disabled = true;
+
+        if (scripted) {
+            switch (newProgressBarValue) {
+                case 1:
+                    break;
+                case 2:
+                    setTimeout(() => {
+                        zoomButton.click();
+                    }, 1500);
+                    break;
+                case 3:
+                    zoomButton.click();
+                    setTimeout(() => {
+                        rotateButton.click();
+                    }, 1500);
+                    break;
+                case 4:
+                    rotateButton.click();
+                    setTimeout(() => {
+                        flashlightButton.click();
+                    }, 1500);
+                    break;
+                case 5:
+                    flashlightButton.click();
+                    break;
+            }
+        }
       }
     }
 
@@ -527,6 +530,31 @@ box.addEventListener("mouseleave", () => {
 
       setTimeout(shoot, 0);
     }
+  </script>
+
+  <script>
+    const modal = document.getElementById("myModal");
+    document.addEventListener("keydown", function () {
+      if (!modal.classList.contains("is-active") && event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
+        modal.classList.add("is-active");
+        const input = document.getElementById("input");
+        input.value = "";
+        input.focus();
+      }
+      if (event.key === "Escape") {
+        modal.classList.remove("is-active");
+      }
+      if (event.key === "Enter") {
+        const input = document.getElementById("input");
+        console.log(input.value);
+      }
+    });
+    document.querySelectorAll(".modal-close, .modal-background").forEach((element) => {
+      element.addEventListener("click", function () {
+        const modal = document.getElementById("myModal");
+        modal.classList.remove("is-active"); // Close the modal
+      });
+    });
   </script>
 
   <style>
