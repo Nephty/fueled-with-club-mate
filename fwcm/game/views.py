@@ -9,6 +9,7 @@ working_pages = [
     "odoo", "linkedin", "youtube", "wikipedia", "reddit", "yahoo", "pinterest", "discord", "twitch", "spotify"
 ]
 
+@csrf_exempt
 def dynamic_game_view(request):
     page = random.choice(working_pages)
     print(page)
