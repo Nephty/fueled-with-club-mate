@@ -85,6 +85,11 @@
 
 {% block content %}
 
+    <audio id="audioPlayer" src="https://harbiinger.xyz/correct.mp3" controls>
+    </audio>
+    <audio id="errorPlayer" src="https://harbiinger.xyz/error.mp3" controls>
+    </audio>
+
   
   <div class="columns is-centered has-text-centered my-3">
     <progress id="progress-bar" class="progress is-primary is-small is-centered" value="2" max="5" style="width: 30%;"></progress>
@@ -410,6 +415,10 @@ box.addEventListener("mouseleave", () => {
     }
 
     function inputWrong() {
+      // sound effect
+      const audio = document.getElementById("errorPlayer");
+      audio.play();
+
       input.style.backgroundColor = "rgba(150, 50, 50, 0.7)";
       input.classList.add('shake');
 
@@ -423,6 +432,10 @@ box.addEventListener("mouseleave", () => {
     }
 
     function validInput() {
+      // sound effect
+      const audio = document.getElementById('audioPlayer');
+      audio.play();
+
       const inputRext = input.getBoundingClientRect();
       const x = inputRext.left + (inputRext.width / 2);
       const y = inputRext.top + (inputRext.height / 2);
