@@ -447,6 +447,10 @@
         setTimeout(() => {
           location.reload();
         }, 5000);
+        if (scripted) {
+          flashlightButton.click();
+          waveButton.click();
+        }
       } else {
         setCookie(GAMES_REMAINING_COOKIE_NAME, newRemainingGames);
         const newScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
@@ -492,24 +496,23 @@
               break;
             case 2:
               setTimeout(() => {
-                zoomButton.click();
-              }, 1500);
-              break;
-            case 3:
-              zoomButton.click();
-              setTimeout(() => {
                 rotateButton.click();
               }, 1500);
               break;
-            case 4:
+            case 3:
               rotateButton.click();
               setTimeout(() => {
                 flashlightButton.click();
               }, 1500);
               break;
-            case 5:
+            case 4:
               flashlightButton.click();
+              setTimeout(() => {
+                flashlightButton.click();
+                waveButton.click();
+              }, 1500);
               break;
+              // Case 5 is in the first if block, not the else block
           }
         }
       }
