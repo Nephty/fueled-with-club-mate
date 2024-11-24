@@ -19,4 +19,10 @@
 7. Récap fin de game
 8. Montrer autres fonctionalitées
 
-## Insérer du lore ?
+## Lore/contexte
+
+Internet est corrompu, les sites ont perdu leur nom et tout leur contenu est totalement transformé. Vous êtes des détectives qui allez devoir utiliser vos connaissances d'internautes pour retrouver les noms des sites corrompus afin de réparer internet.
+
+## Ébauche de script
+
+L'heure est grave, Internet est corrompu, les sites ont perdu leur nom et tout leur contenu est totalement transformé ! Heureusement, vous, cher (public ? jury ?) êtes de grands internautes qui connaissez Internet comme votre poche. Alors enfilez votre veste de détective, et aidez-nous à inspecter ces sites !
