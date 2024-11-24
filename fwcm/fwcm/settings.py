@@ -45,7 +45,7 @@ LOGGING = {
     },
 }
 
-ALLOWED_HOSTS = ['*'] # TODO : check, used to be dev url
+ALLOWED_HOSTS = ['*', 'localhost', 'fwcm.ugop.me'] # TODO : check, used to be dev url
 
 # Use the X-Forwarded-Host header for the purposes of constructing absolute URIs
 USE_X_FORWARDED_HOST = True
@@ -54,13 +54,15 @@ USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 
 # List of hosts which are trusted origins for unsafe requests (e.g. POST)
-# CSRF_TRUSTED_ORIGINS = ['*'] # TODO : check, used to be dev url
+# CSRF_TRUSTED_ORIGINS = ['*', 'https://fwcm.ugop.me', 'http://fwcm.ugop.me'] # TODO : check, used to be dev url
 
 # Use the X-Forwarded-Proto header for the purposes of detecting secure connections
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Force all cookies to be secure, meaning they will only be sent over HTTPS
 SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Lax'  
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
