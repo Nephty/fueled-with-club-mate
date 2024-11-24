@@ -446,7 +446,6 @@
         }, 5000);
         if (scripted) {
           flashlightButton.click();
-          waveButton.click();
         }
       } else {
         setCookie(GAMES_REMAINING_COOKIE_NAME, newRemainingGames);
@@ -488,8 +487,12 @@
         if (scripted) {
           switch (newProgressBarValue) {
             case 1:
+              setTimeout(() => {
+                blurButton.click();
+              }, 1500);
               break;
             case 2:
+              blurButton.click()
               setTimeout(() => {
                 rotateButton.click();
               }, 1500);
@@ -507,7 +510,7 @@
                 waveButton.click();
               }, 1500);
               break;
-              // Case 5 is in the first if block, not the else block
+            // Case 5 is in the first if block, not the else block
           }
         }
       }
