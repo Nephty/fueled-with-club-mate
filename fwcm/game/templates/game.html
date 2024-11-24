@@ -438,14 +438,11 @@
 
       const newRemainingGames = parseInt(getCookie(GAMES_REMAINING_COOKIE_NAME)) - 1;
       if (newRemainingGames === 0) {
-        const finalScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
-        console.log("Game over " + finalScore);
         setCookie(GAMES_REMAINING_COOKIE_NAME, 5);
-        setCookie(SCORE_COOKIE_NAME, 0);
         const progressBar = document.getElementById('progress-bar');
         progressBar.value = 5;
         setTimeout(() => {
-          location.reload();
+          window.location.href = "/end";
         }, 5000);
         if (scripted) {
           flashlightButton.click();
@@ -453,8 +450,6 @@
         }
       } else {
         setCookie(GAMES_REMAINING_COOKIE_NAME, newRemainingGames);
-        const newScore = parseInt(getCookie(SCORE_COOKIE_NAME)) + 50;
-        setCookie(SCORE_COOKIE_NAME, newScore);
         const progressBar = document.getElementById('progress-bar');
         const newProgressBarValue = 5 - newRemainingGames;
 
